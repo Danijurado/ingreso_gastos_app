@@ -1,0 +1,22 @@
+
+
+{% extends "base.html" %}
+{% block pageBase %}
+
+<h1>Esto seria actualizacion de Ingresos y Gastos</h1>
+<p>Un simulacro de contabilidad</p>
+
+<form>
+        <label for="fecha">Fecha:</label>
+        <input type="date" name="fecha" placeholder="Ingrese fecha">
+        <br>
+        <label for="concepto">Concepto:</label>
+        <input type="text" name="concepto" placeholder="Ingrese Concepto" >
+        <br>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" placeholder="Ingrese Cantidad">
+        <br>
+        <button onclick="alert('Ya lo guardaste, gracias')">Editar</button>
+        
+</form>
+{% endblock %}
