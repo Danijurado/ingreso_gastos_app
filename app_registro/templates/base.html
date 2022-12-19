@@ -4,34 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresos-Gastos:{{ pageTitle }}</title>
+    <title>Ingresos-Gatos: {{ pageTitle }}{# este hueco para recibir variable  #}</title>
 </head>
-
-
 <style>
     table, th, td {
-      border:1px solid rgb(5, 237, 5);
+      border:1px solid rgb(9, 5, 237);
     }
 </style>
-
 <body>
     <header>
         <div>
-            <a href="/">Inicio</a>
-            <a href="/new">New</a>
+            <a href="/">Inicio</a> |
+            <a href="/new">Nuevo</a> |
             <a href="/update">Editar</a> |
             <a href="/delete">Borrar</a>
         </div>
-        
-        <h1>Aplicacion bootcamp XIII</h1>
+
+        <h1> Aplicación Flask de BZ XIII</h1>
     </header>
     <section>
-        {%block page base%}{#hueco para recibir plantilla html#}
-        {% endblock%}
-
-    </section>
+        {% block pageBase %}{# esto es un hueco para recibir plantilla html #}
+        {% endblock %}
+    </section> 
     <footer>
-        &copy; 2022 - Todos los derechos reservados - danieljp.85@gmail.com
-    </footer>
+        &copy; 2022 - Todos los derechos reservados - rolando@email.com
+    </footer>   
 </body>
 </html>
