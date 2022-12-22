@@ -1,4 +1,23 @@
 {% extends "base.html" %}
 {% block pageBase %}
-<h1>Esto es la vista para eliminar registro</h1>
+
+<table>
+    <tr>
+        <td>Fecha:</td>
+        <td>{{registros[1]}}</td>
+    </tr>
+    <tr>
+        <td>Concepto:</td>
+        <td>{{registros[2]}}</td>
+    </tr>
+
+    <tr>
+        <td>Cantidad:</td>
+        <td>{{registros[3]}}</td>
+    </tr>
+</table>
+<form action="/delete/{{registros[0]}}" method="post">
+    <button type="submit">Borrar Registro</button>
+</form>
+
 {% endblock %}

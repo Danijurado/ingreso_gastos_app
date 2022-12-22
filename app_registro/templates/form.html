@@ -1,20 +1,31 @@
-{% block formBase %}
+{% extends "base.html" %}
+
+{% block pageBase %}
+
 <h1>Esto seria {{typeAction}} de Ingresos y Gastos</h1>
 <p>Un simulacro de contabilidad</p>
 
-<form>
+<form action="/new" method="post">
         <label for="fecha">Fecha:</label>
-        <input type="date" name="fecha" placeholder="Ingrese fecha">
+        <input type="date" name="date" value="{{dataForm.date}}" required>
         <br>
         <label for="concepto">Concepto:</label>
-        <input type="text" name="concepto" placeholder="Ingrese Concepto" >
+        <input type="text" name="concept" placeholder="Ingrese Concepto" value="{{dataForm.concept}}">
         <br>
         <label for="cantidad">Cantidad:</label>
-        <input type="number" name="cantidad" placeholder="Ingrese Cantidad">
+        <input type="number" name="quantity" placeholder="Ingrese Cantidad" step="0.01" value="{{dataForm.quantity}}">
         <br>
-        <button onclick="alert('Ya lo guardaste, gracias')" >{{butonAction}}</button>
-        
+        <button type="submit">{{typeButon}}</button>
 </form>
 
+<a href="/">Volver</a>
+
+<article>
+        <ul>
+           {% for item in msgError %}     
+                <li>{{item}}</li>
+           {% endfor %}     
+        </ul>
+</article>
 
 {% endblock %}
