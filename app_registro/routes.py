@@ -28,7 +28,7 @@ def create():
 
         if error:
             #hay error
-            return render_template("new.html",pageTitle="Alta",typeAction="Alta",typeButon="Guardar",msgError=error,dataForm=request.form)
+            return render_template("new.html",pageTitle="Alta",typeAction="Alta",typeButon="Guardar",msgError=error,dataForm=request.form, ruta = '/new')
         else: 
 
            
@@ -58,11 +58,42 @@ def create():
 
         
    
-@app.route("/update/<int:id>")
+@app.route("/update/<int:id>",methods=["GET","POST"])
 def edit(id):
-    return render_template("update.html",pageTitle="Modificación",typeAction="Modificación",typeButon="Editar",dataForm={}) 
-    #return f"este es el id={id} del registro a modificar"
+    if request.method == "GET":
 
+        mifichero =  open('data/movimientos.csv','r')
+        lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
+        registro_buscado=[]#len 0
+        for registro in lectura:
+            if registro[0] == str(id):
+                #aqui encuentra el dato
+                registro_buscado = registro
+        mifichero.close()
+        dataForm = {'date':registro_buscado[1], 'concept':registro_buscado[2], 'quantity':registro_buscado[3]}
+            
+        
+        return render_template("update.html",pageTitle="Modificación",typeAction="Modificación",typeButon="Editar",dataForm=dataForm, ruta = '/update/'+str(id)) 
+    #return f"este es el id={id} del registro a modificar"
+    else:
+        registros = []
+        mifichero =  open('data/movimientos.csv','r')
+        
+        lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
+        for registro in lectura:
+            if registro[0] == str(id):
+                registros.append([id,request.form['date'],request.form['concept'],request.form['quantity']])
+            else:
+                registros.append(registro)
+        mifichero_new =  open('data/movimientos.csv','w')
+        csvWriter = csv.writer( mifichero_new , delimiter=',',quotechar='"')
+        for registro in registros:
+            csvWriter.writerow(registro)
+            
+        mifichero_new.close()
+        
+        return redirect('/')   
+        
 @app.route("/delete/<int:id>", methods=["GET","POST"])
 def remove(id):
 
@@ -86,7 +117,24 @@ def remove(id):
         else:
            return redirect("/")
     else:#aqui seria post
-        return f"Debemos de borrar el archivo con este id={id}"
+        #return f"Debemos de borrar el archivo con este id={id}"
+        registros = []
+        mifichero =  open('data/movimientos.csv','r')
+        
+        lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
+        
+        for registro in lectura:
+            if registro[0] != str(id):#mientras el id sea distinto del proporcionado para borrar que escriba en fichero
+                registros.append(registro)
+        mifichero.close()
+        mifichero_new =  open('data/movimientos.csv','w')
+        csvWriter = csv.writer( mifichero_new , delimiter=',',quotechar='"')
+        for registro in registros:
+            csvWriter.writerow(registro)
+            
+        mifichero_new.close()
+        
+        return redirect('/')
         '''
         fichero_old =  open('data/movimientos.csv','r')
         fichero = open('data/movimientos_new.csv','w',newline="")
