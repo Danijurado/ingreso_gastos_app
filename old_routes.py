@@ -61,11 +61,10 @@ def create():
 @app.route("/update/<int:id>",methods=["GET","POST"])
 def edit(id):
     if request.method == "GET":
-        
+
         mifichero =  open('data/movimientos.csv','r')
         lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
         registro_buscado=[]#len 0
-        
         for registro in lectura:
             if registro[0] == str(id):
                 #aqui encuentra el dato
@@ -77,14 +76,10 @@ def edit(id):
         return render_template("update.html",pageTitle="Modificación",typeAction="Modificación",typeButon="Editar",dataForm=dataForm, ruta = '/update/'+str(id)) 
     #return f"este es el id={id} del registro a modificar"
     else:
-        error = validateForm(request.form)
-        if error:
-            return render_template("update.html",pageTitle="Modificacion",typeAction="Modificacion",typeButon="Editar",msgError=error,dataForm=request.form, ruta = '/update')
-        else:
-            registros = []
-            mifichero =  open('data/movimientos.csv','r')
+        registros = []
+        mifichero =  open('data/movimientos.csv','r')
         
-            lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
+        lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
         for registro in lectura:
             if registro[0] == str(id):
                 registros.append([id,request.form['date'],request.form['concept'],request.form['quantity']])
@@ -109,20 +104,20 @@ def remove(id):
 
         mifichero =  open('data/movimientos.csv','r')
         lectura= csv.reader(mifichero, delimiter=',',quotechar='"')
-        registro_buscado=[]
+        registro_buscado=[]#len 0
         for registro in lectura:
             if registro[0] == str(id):
-                
+                #aqui encuentra el dato
                 registro_buscado = registro
         mifichero.close()
-       
+        #que hacemos si no encuentra registro
 
         if len(registro_buscado) > 0:
             return render_template("delete.html",pageTitle="Eliminar",registros=registro_buscado)
         else:
            return redirect("/")
     else:#aqui seria post
-        
+        #return f"Debemos de borrar el archivo con este id={id}"
         registros = []
         mifichero =  open('data/movimientos.csv','r')
         
@@ -148,12 +143,3 @@ def remove(id):
 #3-que la cantidad sea distinto de 0 y de vacio
 
 def validateForm(requestForm):
-    hoy = date.today().isoformat()
-    errores=[]
-    if requestForm['date'] > hoy:
-        errores.append("fecha invalida: La fecha introducida es futura")
-    if requestForm['concept'] == "":
-        errores.append("concepto vacio: Introduce un concepto para el registro")
-    if requestForm['quantity'] == "" or float(requestForm['quantity']) == 0.0:
-        errores.append("cantidad vacio o cero: Introduce una cantidad positiva o negativa")   
-    return errores
